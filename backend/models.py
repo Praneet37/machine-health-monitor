@@ -11,7 +11,9 @@ from datetime import datetime
 
 # Path to the SQLite database file (stored in /database)
 DB_PATH = os.path.join(os.path.dirname(__file__), "..", "database", "machine_health.db")
-
+# Ensure the database folder exists (Git doesn't track empty folders,
+# so this guarantees it's created fresh on any new deployment)
+os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
 
 def get_connection():
     """Create and return a new database connection.
