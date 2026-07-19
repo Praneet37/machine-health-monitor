@@ -4,17 +4,19 @@ app.py
 Main Flask application. Handles page routing, session-based login,
 and JSON API endpoints consumed by the frontend JavaScript.
 """
-
+import os
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 from datetime import datetime
-import os
 import random
 
 from models import init_db, get_connection, seed_default_user, now_str
 from ai_predictor import predict_health
 from seed_data import seed_machines_and_readings
-
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder=os.path.join(os.path.dirname(__file__), "..", "templates"),
+    static_folder=os.path.join(os.path.dirname(__file__), "..", "static")
+)
 app.secret_key = "demo-secret-key-change-in-production"  # fine for a demo app
 
 
