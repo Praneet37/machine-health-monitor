@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Details | Machine Health Monitor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+<div class="app-layout">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="logo-icon"><img src="{{ url_for('static', filename='assets/icons/logo.svg') }}" width="18" height="18" style="filter: invert(1);"></div>
+            <span>MachineHealth</span>
+        </div>
+        <nav>
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='assets/icons/dashboard.svg') }}" width="18" height="18"> Dashboard
+            </a>
+            <a href="{{ url_for('machines_page') }}" class="active">
+                <img src="{{ url_for('static', filename='assets/icons/machines.svg') }}" width="18" height="18"> Machines
+            </a>
+            <a href="{{ url_for('predictions_page') }}">
+                <img src="{{ url_for('static', filename='assets/icons/predictions.svg') }}" width="18" height="18"> Predictions
+            </a>
+            <a href="{{ url_for('reports_page') }}">
+                <img src="{{ url_for('static', filename='assets/icons/reports.svg') }}" width="18" height="18"> Reports
+            </a>
+            <a href="{{ url_for('settings_page') }}">
+                <img src="{{ url_for('static', filename='assets/icons/settings.svg') }}" width="18" height="18"> Settings
+            </a>
+        </nav>
+        <a href="{{ url_for('logout') }}" class="logout-link">
+            <img src="{{ url_for('static', filename='assets/icons/logout.svg') }}" width="18" height="18"> Logout
+        </a>
+    </aside>
+
+    <!-- ===================== MAIN CONTENT ===================== -->
+    <main class="main-content">
+        <div class="topbar">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+                <div>
+                    <h2 id="machine-name">Loading...</h2>
+                    <p style="font-size:12.5px; color:#607D8B; margin-top:2px;">
+                        Type: <span id="machine-type">--</span> &nbsp;|&nbsp; Installed: <span id="machine-installed">--</span>
+                    </p>
+                </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px;">
+                <button class="btn btn-outline btn-sm" id="refresh-btn">🔄 Refresh Now</button>
+                <div class="user-chip">
+                    <div class="avatar">{{ username[0]|upper }}</div>
+                    <span>{{ username }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest sensor values -->
+        <div class="card" style="margin-bottom:18px;">
+            <div class="metric-row">
+                <div class="metric-box">
+                    <div class="metric-value" id="metric-temp">-- °C</div>
+                    <div class="metric-label">Temperature</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value" id="metric-vib">-- mm/s</div>
+                    <div class="metric-label">Vibration</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value" id="metric-pressure">-- PSI</div>
+                    <div class="metric-label">Pressure</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-value" id="metric-rpm">-- RPM</div>
+                    <div class="metric-label">RPM</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts + AI Panel -->
+        <div class="detail-grid">
+            <div class="card chart-card">
+                <h3>Temperature Trend</h3>
+                <canvas id="tempChart"></canvas>
+            </div>
+            <div class="card ai-panel">
+                <h3 style="margin-bottom:14px; font-size:15px;">AI Prediction</h3>
+                <div class="row"><span>Status</span><span id="ai-status-badge" class="badge Healthy">--</span></div>
+                <div class="row"><span>AI Health Score</span><span id="ai-health-score">--%</span></div>
+                <div class="row"><span>Failure Probability</span><span id="ai-failure-prob">--%</span></div>
+                <div class="row"><span>Remaining Useful Life</span><span id="ai-rul">-- days</span></div>
+                <div class="row"><span>Confidence Score</span><span id="ai-confidence">--%</span></div>
+                <div class="row" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                    <span>Recommended Maintenance</span>
+                    <span id="ai-recommendation" style="font-weight:500; color:#263238;">--</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="card chart-card">
+                <h3>Vibration Trend</h3>
+                <canvas id="vibChart"></canvas>
+            </div>
+            <div class="card chart-card">
+                <h3>Pressure Trend</h3>
+                <canvas id="pressureChart"></canvas>
+            </div>
+            <div class="card chart-card" style="grid-column: 1 / -1;">
+                <h3>RPM Trend</h3>
+                <canvas id="rpmChart"></canvas>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Pass the machine ID from Flask into JS -->
+<script>
+    const MACHINE_ID = {{ machine_id }};
+</script>
+<script src="{{ url_for('static', filename='js/machine_detail.js') }}"></script>
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("open");
+    });
+</script>
+</body>
+</html>

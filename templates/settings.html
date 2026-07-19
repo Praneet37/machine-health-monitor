@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings | Machine Health Monitor</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="app-layout">
+
+    <!-- ===================== SIDEBAR ===================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="logo-icon"><img src="{{ url_for('static', filename='assets/icons/logo.svg') }}" width="18" height="18" style="filter: invert(1);"></div>
+            <span>MachineHealth</span>
+        </div>
+        <nav>
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='assets/icons/dashboard.svg') }}" width="18" height="18"> Dashboard
+            </a>
+            <a href="{{ url_for('machines_page') }}">
+                <img src="{{ url_for('static', filename='assets/icons/machines.svg') }}" width="18" height="18"> Machines
+            </a>
+            <a href="{{ url_for('predictions_page') }}">
+                <img src="{{ url_for('static', filename='assets/icons/predictions.svg') }}" width="18" height="18"> Predictions
+            </a>
+            <a href="{{ url_for('reports_page') }}">
+                <img src="{{ url_for('static', filename='assets/icons/reports.svg') }}" width="18" height="18"> Reports
+            </a>
+            <a href="{{ url_for('settings_page') }}" class="active">
+                <img src="{{ url_for('static', filename='assets/icons/settings.svg') }}" width="18" height="18"> Settings
+            </a>
+        </nav>
+        <a href="{{ url_for('logout') }}" class="logout-link">
+            <img src="{{ url_for('static', filename='assets/icons/logout.svg') }}" width="18" height="18"> Logout
+        </a>
+    </aside>
+
+    <!-- ===================== MAIN CONTENT ===================== -->
+    <main class="main-content">
+        <div class="topbar">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <button class="menu-toggle" id="menu-toggle">☰</button>
+                <h2>Settings</h2>
+            </div>
+            <div class="user-chip">
+                <div class="avatar">{{ username[0]|upper }}</div>
+                <span>{{ username }}</span>
+            </div>
+        </div>
+
+        <div class="predict-grid">
+            <!-- Account Info -->
+            <div class="card">
+                <h3 style="margin-bottom:16px; font-size:15px;">Account</h3>
+                <div class="ai-panel">
+                    <div class="row"><span>Username</span><span>{{ username }}</span></div>
+                    <div class="row"><span>Role</span><span>Administrator</span></div>
+                    <div class="row"><span>Access Level</span><span>Full Dashboard Access</span></div>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline btn-sm" style="margin-top:16px; display:inline-block;">Logout</a>
+            </div>
+
+            <!-- System Info -->
+            <div class="card">
+                <h3 style="margin-bottom:16px; font-size:15px;">System Information</h3>
+                <div class="ai-panel">
+                    <div class="row"><span>Application</span><span>AI Machine Health Monitor</span></div>
+                    <div class="row"><span>Data Source</span><span>Simulated Sensor Data</span></div>
+                    <div class="row"><span>Prediction Engine</span><span>Rule-Based AI Model</span></div>
+                    <div class="row"><span>Database</span><span>SQLite (local)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+            <h3 style="margin-bottom:10px; font-size:15px;">About This Demo</h3>
+            <p style="color:#607D8B; font-size:13.5px; line-height:1.6;">
+                This is a demonstration predictive maintenance platform. All machine sensor
+                readings (temperature, vibration, pressure, RPM) are simulated for showcase
+                purposes — no real industrial hardware is connected. The AI prediction engine
+                uses rule-based health scoring to estimate machine status, failure probability,
+                and remaining useful life.
+            </p>
+        </div>
+    </main>
+</div>
+
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", () => {
+        document.getElementById("sidebar").classList.toggle("open");
+    });
+</script>
+</body>
+</html>
